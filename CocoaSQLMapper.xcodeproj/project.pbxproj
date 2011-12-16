@@ -3,262 +3,264 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8DD76F9A0486AA7600D96B5E /* CocoaSQLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* CocoaSQLMapper.m */; settings = {ATTRIBUTES = (); }; };
-		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
-		8DD76F9F0486AA7600D96B5E /* CocoaSQLMapper.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859EA3029092ED04C91782 /* CocoaSQLMapper.1 */; };
-		949D37E9124616C200CA836C /* SMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 949D37E8124616C200CA836C /* SMDatabase.m */; };
-		94D634001246DFC9008BD70A /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D633FF1246DFC9008BD70A /* Person.m */; };
-		94D634231246E95C008BD70A /* SMColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D634221246E95C008BD70A /* SMColumn.m */; };
-		94D6346412471BA8008BD70A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D6346312471BA8008BD70A /* libsqlite3.dylib */; };
-		94D63484124737A2008BD70A /* SMBindParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D63483124737A2008BD70A /* SMBindParameter.m */; };
+		94406E9A149B43E400AC5227 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94406E99149B43E400AC5227 /* libsqlite3.dylib */; };
+		9460656C149B128D005C176B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9460656B149B128D005C176B /* Foundation.framework */; };
+		9460656F149B128D005C176B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9460656E149B128D005C176B /* main.m */; };
+		94606573149B128D005C176B /* CocoaSQLMapper.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94606572149B128D005C176B /* CocoaSQLMapper.1 */; };
+		94D335B7149B16F200941770 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B0149B16F200941770 /* Person.m */; };
+		94D335B8149B16F200941770 /* SMBindParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B2149B16F200941770 /* SMBindParameter.m */; };
+		94D335B9149B16F200941770 /* SMColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B4149B16F200941770 /* SMColumn.m */; };
+		94D335BA149B16F200941770 /* SMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B6149B16F200941770 /* SMDatabase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8DD76F9E0486AA7600D96B5E /* CopyFiles */ = {
+		94606565149B128D005C176B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				8DD76F9F0486AA7600D96B5E /* CocoaSQLMapper.1 in CopyFiles */,
+				94606573149B128D005C176B /* CocoaSQLMapper.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08FB7796FE84155DC02AAC07 /* CocoaSQLMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CocoaSQLMapper.m; sourceTree = "<group>"; };
-		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32A70AAB03705E1F00C91783 /* CocoaSQLMapper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaSQLMapper_Prefix.pch; sourceTree = "<group>"; };
-		8DD76FA10486AA7600D96B5E /* CocoaSQLMapper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CocoaSQLMapper; sourceTree = BUILT_PRODUCTS_DIR; };
-		949D37E7124616C200CA836C /* SMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMDatabase.h; sourceTree = "<group>"; };
-		949D37E8124616C200CA836C /* SMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMDatabase.m; sourceTree = "<group>"; };
-		94D633FE1246DFC9008BD70A /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
-		94D633FF1246DFC9008BD70A /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
-		94D634211246E95C008BD70A /* SMColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMColumn.h; sourceTree = "<group>"; };
-		94D634221246E95C008BD70A /* SMColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMColumn.m; sourceTree = "<group>"; };
-		94D6346312471BA8008BD70A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		94D63482124737A2008BD70A /* SMBindParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBindParameter.h; sourceTree = "<group>"; };
-		94D63483124737A2008BD70A /* SMBindParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMBindParameter.m; sourceTree = "<group>"; };
-		C6859EA3029092ED04C91782 /* CocoaSQLMapper.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CocoaSQLMapper.1; sourceTree = "<group>"; };
+		94406E99149B43E400AC5227 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		94606567149B128D005C176B /* CocoaSQLMapper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CocoaSQLMapper; sourceTree = BUILT_PRODUCTS_DIR; };
+		9460656B149B128D005C176B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9460656E149B128D005C176B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		94606571149B128D005C176B /* CocoaSQLMapper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoaSQLMapper-Prefix.pch"; sourceTree = "<group>"; };
+		94606572149B128D005C176B /* CocoaSQLMapper.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CocoaSQLMapper.1; sourceTree = "<group>"; };
+		94D335AF149B16F200941770 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		94D335B0149B16F200941770 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		94D335B1149B16F200941770 /* SMBindParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBindParameter.h; sourceTree = "<group>"; };
+		94D335B2149B16F200941770 /* SMBindParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMBindParameter.m; sourceTree = "<group>"; };
+		94D335B3149B16F200941770 /* SMColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMColumn.h; sourceTree = "<group>"; };
+		94D335B4149B16F200941770 /* SMColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMColumn.m; sourceTree = "<group>"; };
+		94D335B5149B16F200941770 /* SMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMDatabase.h; sourceTree = "<group>"; };
+		94D335B6149B16F200941770 /* SMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMDatabase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
+		94606564149B128D005C176B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
-				94D6346412471BA8008BD70A /* libsqlite3.dylib in Frameworks */,
+				94406E9A149B43E400AC5227 /* libsqlite3.dylib in Frameworks */,
+				9460656C149B128D005C176B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08FB7794FE84155DC02AAC07 /* CocoaSQLMapper */ = {
+		9460655C149B128D005C176B = {
 			isa = PBXGroup;
 			children = (
-				08FB7795FE84155DC02AAC07 /* Source */,
-				94D634041246DFED008BD70A /* SQLMapper */,
-				C6859EA2029092E104C91782 /* Documentation */,
-				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
-				1AB674ADFE9D54B511CA2CBB /* Products */,
+				9460656D149B128D005C176B /* CocoaSQLMapper */,
+				9460656A149B128D005C176B /* Frameworks */,
+				94606568149B128D005C176B /* Products */,
 			);
-			name = CocoaSQLMapper;
 			sourceTree = "<group>";
 		};
-		08FB7795FE84155DC02AAC07 /* Source */ = {
+		94606568149B128D005C176B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				32A70AAB03705E1F00C91783 /* CocoaSQLMapper_Prefix.pch */,
-				08FB7796FE84155DC02AAC07 /* CocoaSQLMapper.m */,
-				94D633FE1246DFC9008BD70A /* Person.h */,
-				94D633FF1246DFC9008BD70A /* Person.m */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
-		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
-				94D6346312471BA8008BD70A /* libsqlite3.dylib */,
-			);
-			name = "External Frameworks and Libraries";
-			sourceTree = "<group>";
-		};
-		1AB674ADFE9D54B511CA2CBB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8DD76FA10486AA7600D96B5E /* CocoaSQLMapper */,
+				94606567149B128D005C176B /* CocoaSQLMapper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		94D634041246DFED008BD70A /* SQLMapper */ = {
+		9460656A149B128D005C176B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				949D37E7124616C200CA836C /* SMDatabase.h */,
-				949D37E8124616C200CA836C /* SMDatabase.m */,
-				94D63482124737A2008BD70A /* SMBindParameter.h */,
-				94D63483124737A2008BD70A /* SMBindParameter.m */,
-				94D634211246E95C008BD70A /* SMColumn.h */,
-				94D634221246E95C008BD70A /* SMColumn.m */,
+				9460656B149B128D005C176B /* Foundation.framework */,
+				94406E99149B43E400AC5227 /* libsqlite3.dylib */,
 			);
-			name = SQLMapper;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C6859EA2029092E104C91782 /* Documentation */ = {
+		9460656D149B128D005C176B /* CocoaSQLMapper */ = {
 			isa = PBXGroup;
 			children = (
-				C6859EA3029092ED04C91782 /* CocoaSQLMapper.1 */,
+				94D335AF149B16F200941770 /* Person.h */,
+				94D335B0149B16F200941770 /* Person.m */,
+				94D335B1149B16F200941770 /* SMBindParameter.h */,
+				94D335B2149B16F200941770 /* SMBindParameter.m */,
+				94D335B3149B16F200941770 /* SMColumn.h */,
+				94D335B4149B16F200941770 /* SMColumn.m */,
+				94D335B5149B16F200941770 /* SMDatabase.h */,
+				94D335B6149B16F200941770 /* SMDatabase.m */,
+				9460656E149B128D005C176B /* main.m */,
+				94606572149B128D005C176B /* CocoaSQLMapper.1 */,
+				94606570149B128D005C176B /* Supporting Files */,
 			);
-			name = Documentation;
+			path = CocoaSQLMapper;
+			sourceTree = "<group>";
+		};
+		94606570149B128D005C176B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				94606571149B128D005C176B /* CocoaSQLMapper-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8DD76F960486AA7600D96B5E /* CocoaSQLMapper */ = {
+		94606566149B128D005C176B /* CocoaSQLMapper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "CocoaSQLMapper" */;
+			buildConfigurationList = 94606576149B128D005C176B /* Build configuration list for PBXNativeTarget "CocoaSQLMapper" */;
 			buildPhases = (
-				8DD76F990486AA7600D96B5E /* Sources */,
-				8DD76F9B0486AA7600D96B5E /* Frameworks */,
-				8DD76F9E0486AA7600D96B5E /* CopyFiles */,
+				94606563149B128D005C176B /* Sources */,
+				94606564149B128D005C176B /* Frameworks */,
+				94606565149B128D005C176B /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = CocoaSQLMapper;
-			productInstallPath = "$(HOME)/bin";
 			productName = CocoaSQLMapper;
-			productReference = 8DD76FA10486AA7600D96B5E /* CocoaSQLMapper */;
+			productReference = 94606567149B128D005C176B /* CocoaSQLMapper */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		08FB7793FE84155DC02AAC07 /* Project object */ = {
+		9460655E149B128D005C176B /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CocoaSQLMapper" */;
-			compatibilityVersion = "Xcode 3.1";
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "株式会社インサイト・プラス";
+			};
+			buildConfigurationList = 94606561149B128D005C176B /* Build configuration list for PBXProject "CocoaSQLMapper" */;
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
-			hasScannedForEncodings = 1;
+			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				en,
 			);
-			mainGroup = 08FB7794FE84155DC02AAC07 /* CocoaSQLMapper */;
+			mainGroup = 9460655C149B128D005C176B;
+			productRefGroup = 94606568149B128D005C176B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DD76F960486AA7600D96B5E /* CocoaSQLMapper */,
+				94606566149B128D005C176B /* CocoaSQLMapper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8DD76F990486AA7600D96B5E /* Sources */ = {
+		94606563149B128D005C176B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DD76F9A0486AA7600D96B5E /* CocoaSQLMapper.m in Sources */,
-				949D37E9124616C200CA836C /* SMDatabase.m in Sources */,
-				94D634001246DFC9008BD70A /* Person.m in Sources */,
-				94D634231246E95C008BD70A /* SMColumn.m in Sources */,
-				94D63484124737A2008BD70A /* SMBindParameter.m in Sources */,
+				9460656F149B128D005C176B /* main.m in Sources */,
+				94D335B7149B16F200941770 /* Person.m in Sources */,
+				94D335B8149B16F200941770 /* SMBindParameter.m in Sources */,
+				94D335B9149B16F200941770 /* SMColumn.m in Sources */,
+				94D335BA149B16F200941770 /* SMDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB927508733DD40010E9CD /* Debug */ = {
+		94606574149B128D005C176B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = CocoaSQLMapper_Prefix.pch;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = CocoaSQLMapper;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		1DEB927608733DD40010E9CD /* Release */ = {
+		94606575149B128D005C176B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = CocoaSQLMapper_Prefix.pch;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = CocoaSQLMapper;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		1DEB927908733DD40010E9CD /* Debug */ = {
+		94606577149B128D005C176B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CocoaSQLMapper/CocoaSQLMapper-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		1DEB927A08733DD40010E9CD /* Release */ = {
+		94606578149B128D005C176B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CocoaSQLMapper/CocoaSQLMapper-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "CocoaSQLMapper" */ = {
+		94606561149B128D005C176B /* Build configuration list for PBXProject "CocoaSQLMapper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB927508733DD40010E9CD /* Debug */,
-				1DEB927608733DD40010E9CD /* Release */,
+				94606574149B128D005C176B /* Debug */,
+				94606575149B128D005C176B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CocoaSQLMapper" */ = {
+		94606576149B128D005C176B /* Build configuration list for PBXNativeTarget "CocoaSQLMapper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB927908733DD40010E9CD /* Debug */,
-				1DEB927A08733DD40010E9CD /* Release */,
+				94606577149B128D005C176B /* Debug */,
+				94606578149B128D005C176B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+	rootObject = 9460655E149B128D005C176B /* Project object */;
 }

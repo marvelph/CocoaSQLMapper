@@ -2,19 +2,13 @@
 //  Person.h
 //  CocoaSQLMapper
 //
-//  Created by Kenji Nishishiro <marvel@programmershigh.org> on 10/09/19.
-//  Copyright 2010 Kenji Nishishiro. All rights reserved.
+//  Copyright 2010-2011 Kenji Nishishiro. All rights reserved.
+//  Written by Kenji Nishishiro <marvel@programmershigh.org>.
 //
 
 #import <Foundation/Foundation.h>
 
-
-@interface Person : NSObject {
-	NSInteger key_;
-	NSString *name_;
-	NSInteger age_;
-	NSDate *dateOfBirth_;
-}
+@interface Person : NSObject
 
 @property (nonatomic) NSInteger key;
 @property (nonatomic, copy) NSString *name;

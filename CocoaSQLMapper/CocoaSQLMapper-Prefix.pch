@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'CocoaSQLMapper' target in the 'CocoaSQLMapper' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

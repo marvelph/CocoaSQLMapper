@@ -11,7 +11,7 @@
 #import "SMBindParameter.h"
 #import "SMColumn.h"
 
-#import <objc/objc-runtime.h>
+#import <objc/runtime.h>
 
 NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 

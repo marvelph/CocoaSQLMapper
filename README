@@ -10,6 +10,11 @@ FIXME
 - How to use CocoaSQLMapper
 FIXME
 
+- Todo
+Support NSNumber.
+Support NSDictionary parameter.
+Support transactions.
+
 - Licence
 
 Copyright (c) 2010 Kenji Nishishiro

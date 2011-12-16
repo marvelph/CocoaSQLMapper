@@ -7,7 +7,7 @@
 //
 
 //
-// $ sqlite3 Test.db
+// $ sqlite3 ~/persons.sqlite
 // > CREATE TABLE Person(key INTEGER PRIMARY KEY, name, age, dateOfBirth);
 // > INSERT INTO Person(name, age, dateOfBirth) VALUES('Yamada', 25, NULL);
 // > INSERT INTO Person(name, age, dateOfBirth) VALUES('Satoh', NULL, 799599600.0);
@@ -23,7 +23,7 @@ int main (int argc, const char * argv[])
 {
     @autoreleasepool {
         NSError *error = nil;
-        SMDatabase *database = [[SMDatabase alloc] initWithPath:@"/Users/marvel/Test.db" error:&error];
+        SMDatabase *database = [[SMDatabase alloc] initWithPath:@"~/persons.sqlite" error:&error];
         
         Person *parameter = [[Person alloc] init];
         parameter.name = @"Yamada";
@@ -32,8 +32,8 @@ int main (int argc, const char * argv[])
 		
         parameter.name = @"Yamada";
         parameter.age = 30;
-        int count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:&error];
-        NSLog(@"%i", count);
+        NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:&error];
+        NSLog(@"%lu", count);
         
         parameter.name = nil;
         parameter.age = 45;

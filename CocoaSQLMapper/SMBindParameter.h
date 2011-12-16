@@ -11,7 +11,7 @@
 @interface SMBindParameter : NSObject
 
 @property (nonatomic) int index;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *type;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
 
 @end

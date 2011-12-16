@@ -16,7 +16,6 @@ NSString *const SMDatabaseErrorDomain;
 }
 
 - (id)initWithPath:(NSString *)path error:(NSError **)error;
-- (void)close;
 
 - (id)queryObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 - (NSArray *)queryArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;

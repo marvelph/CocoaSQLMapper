@@ -46,8 +46,6 @@ int main (int argc, const char * argv[])
         for (Person* person in persons) {
             NSLog(@"%@", person);
         }
-        
-        [database close];
     }
     return 0;
 }

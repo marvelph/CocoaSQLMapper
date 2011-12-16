@@ -37,25 +37,19 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
                 *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
             }
-            
-            sqlite3_close(_sqlite3);
-            _sqlite3 = NULL;
+            return nil;
         }
     }
     return self;
 }
 
-- (void)close
+- (void)dealloc
 {
-    NSAssert(_sqlite3, @"Database already closed.");
-    
     sqlite3_close(_sqlite3);
-    _sqlite3 = NULL;
 }
 
 - (id)queryObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
-    NSAssert(_sqlite3, @"Database already closed.");
     NSParameterAssert(SQL);
     NSParameterAssert(resultClass);
     
@@ -82,7 +76,6 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (NSArray *)queryArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
-    NSAssert(_sqlite3, @"Database already closed.");
     NSParameterAssert(SQL);
     NSParameterAssert(resultClass);
     
@@ -110,7 +103,6 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
-    NSAssert(_sqlite3, @"Database already closed.");
     NSParameterAssert(SQL);
     
     
@@ -137,7 +129,6 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
-    NSAssert(_sqlite3, @"Database already closed.");
     NSParameterAssert(SQL);
     
     

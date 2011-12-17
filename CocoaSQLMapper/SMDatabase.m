@@ -19,7 +19,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error;
 - (BOOL)bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error;
-- (id)stepStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error;
+- (id)fetchStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error;
 - (BOOL)executeStatement:(sqlite3_stmt *)statement error:(NSError **)error;
 
 @end
@@ -64,7 +64,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
     }
     
-    id result = [self stepStatement:statement resultClass:resultClass once:YES error:error];
+    id result = [self fetchStatement:statement resultClass:resultClass once:YES error:error];
     if (!result) {
         sqlite3_finalize(statement);
         return nil;
@@ -91,7 +91,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
     }
     
-    NSArray* results = [self stepStatement:statement resultClass:resultClass once:NO error:error];
+    NSArray* results = [self fetchStatement:statement resultClass:resultClass once:NO error:error];
     if (!results) {
         sqlite3_finalize(statement);
         return nil;
@@ -103,59 +103,51 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
-    NSParameterAssert(SQL);
-    
-    
-    sqlite3_stmt *statement = [self prepareSQL:SQL error:error];
-    if (!statement) {
+    if (![self executeBySQL:SQL parameter:parameter error:error]) {
         return 0;
     }
-    
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
-            sqlite3_finalize(statement);
-            return 0;
-        }
-    }
-    
-    if (![self executeStatement:statement error:error]) {
-        sqlite3_finalize(statement);
-        return 0;
-    }
-    
-    sqlite3_finalize(statement);
     return sqlite3_last_insert_rowid(_sqlite3);
 }
 
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
-    NSParameterAssert(SQL);
-    
-    
-    sqlite3_stmt *statement = [self prepareSQL:SQL error:error];
-    if (!statement) {
+    if (![self executeBySQL:SQL parameter:parameter error:error]) {
         return 0;
     }
-    
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
-            sqlite3_finalize(statement);
-            return 0;
-        }
-    }
-    
-    if (![self executeStatement:statement error:error]) {
-        sqlite3_finalize(statement);
-        return 0;
-    }
-    
-    sqlite3_finalize(statement);
     return sqlite3_changes(_sqlite3);
 }
 
 - (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
-    return [self updateBySQL:SQL parameter:parameter error:error];
+    if (![self executeBySQL:SQL parameter:parameter error:error]) {
+        return 0;
+    }
+    return sqlite3_changes(_sqlite3);
+}
+
+- (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
+{
+    NSParameterAssert(SQL);
+    
+    sqlite3_stmt *statement = [self prepareSQL:SQL error:error];
+    if (!statement) {
+        return NO;
+    }
+    
+    if (parameter) {
+        if (![self bindStatement:statement parameter:parameter error:error]) {
+            sqlite3_finalize(statement);
+            return NO;
+        }
+    }
+    
+    if (![self executeStatement:statement error:error]) {
+        sqlite3_finalize(statement);
+        return NO;
+    }
+    
+    sqlite3_finalize(statement);
+    return YES;
 }
 
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error

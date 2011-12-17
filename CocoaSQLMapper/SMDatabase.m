@@ -316,7 +316,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return YES;
 }
 
-- (id)stepStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error
+- (id)fetchStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error
 {
     NSMutableArray *columns = [NSMutableArray array];
     int numberOfColumns = sqlite3_column_count(statement);

@@ -19,7 +19,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error;
 - (BOOL)bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error;
-- (id)fetchStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error;
+- (id)stepStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error;
 - (BOOL)executeStatement:(sqlite3_stmt *)statement error:(NSError **)error;
 
 @end
@@ -48,7 +48,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     sqlite3_close(_sqlite3);
 }
 
-- (id)queryObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
+- (id)selectObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
     NSParameterAssert(SQL);
     NSParameterAssert(resultClass);
@@ -64,7 +64,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
     }
     
-    id result = [self fetchStatement:statement resultClass:resultClass once:YES error:error];
+    id result = [self stepStatement:statement resultClass:resultClass once:YES error:error];
     if (!result) {
         sqlite3_finalize(statement);
         return nil;
@@ -74,7 +74,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return result;
 }
 
-- (NSArray *)queryArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
+- (NSArray *)selectArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
     NSParameterAssert(SQL);
     NSParameterAssert(resultClass);
@@ -91,7 +91,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
     }
     
-    NSArray* results = [self fetchStatement:statement resultClass:resultClass once:NO error:error];
+    NSArray* results = [self stepStatement:statement resultClass:resultClass once:NO error:error];
     if (!results) {
         sqlite3_finalize(statement);
         return nil;
@@ -324,7 +324,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return YES;
 }
 
-- (id)fetchStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error
+- (id)stepStatement:(sqlite3_stmt *)statement resultClass:(Class)resultClass once:(BOOL)once error:(NSError **)error
 {
     NSMutableArray *columns = [NSMutableArray array];
     int numberOfColumns = sqlite3_column_count(statement);

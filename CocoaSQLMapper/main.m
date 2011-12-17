@@ -27,7 +27,7 @@ int main (int argc, const char * argv[])
         
         Person *parameter = [[Person alloc] init];
         parameter.name = @"Yamada";
-        Person *person = [database queryObjectBySQL:@"SELECT * FROM Person WHERE name = :name" parameter:parameter resultClass:[Person class] error:&error];
+        Person *person = [database selectObjectBySQL:@"SELECT * FROM Person WHERE name = :name" parameter:parameter resultClass:[Person class] error:&error];
         NSLog(@"%@", person);
 		
         parameter.name = @"Yamada";
@@ -42,7 +42,7 @@ int main (int argc, const char * argv[])
         NSLog(@"%qi", key);
         
         parameter.age = 25;
-        NSArray *persons = [database queryArrayBySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error];
+        NSArray *persons = [database selectArrayBySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error];
         for (Person* person in persons) {
             NSLog(@"%@", person);
         }

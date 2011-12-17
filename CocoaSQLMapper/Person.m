@@ -16,7 +16,7 @@
 @synthesize dateOfBirth = _dateOfBirth;
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"key=%ld, name=%@, age=%ld, dateOfBirth=%@", (long)_key, _name, (long)_age, _dateOfBirth];
+	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%i, dateOfBirth=%@", (long long)_key, _name, (long)_age, _dateOfBirth];
 }
 
 @end

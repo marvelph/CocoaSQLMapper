@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-typedef sqlite3_int64 SMRowid;
-
 NSString *const SMDatabaseErrorDomain;
 
 @interface SMDatabase : NSObject {
@@ -22,7 +20,7 @@ NSString *const SMDatabaseErrorDomain;
 - (id)queryObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 - (NSArray *)queryArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 
-- (SMRowid)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 - (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 

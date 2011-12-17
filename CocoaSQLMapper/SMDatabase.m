@@ -101,7 +101,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return results;
 }
 
-- (SMRowid)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
+- (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     NSParameterAssert(SQL);
     

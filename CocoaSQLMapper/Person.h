@@ -10,9 +10,9 @@
 
 @interface Person : NSObject
 
-@property (nonatomic) NSInteger key;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic) NSInteger age;
-@property (nonatomic, copy) NSDate *dateOfBirth;
+@property (nonatomic) long long key;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic) int age;
+@property (nonatomic, strong) NSDate *dateOfBirth;
 
 @end

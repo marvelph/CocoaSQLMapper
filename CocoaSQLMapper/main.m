@@ -41,7 +41,7 @@ int main (int argc, const char * argv[])
         }
         NSLog(@"%@", person);
 		
-        if (![database transactionWithBlock:^BOOL(NSError **err) {
+        if (![database transactionWithBlock:^(NSError **err) {
             parameter.name = @"Yamada";
             parameter.age = 30;
             NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
@@ -67,8 +67,20 @@ int main (int argc, const char * argv[])
         
         parameter.age = 30;
         NSArray *persons = [database selectArrayBySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error];
+        if (!persons) {
+            NSLog(@"%@", error);
+            return 1;
+        }
         for (Person* person in persons) {
             NSLog(@"%@", person);
+        }
+        
+        if (![database selectWithBlock:^(id rst) {
+            NSLog(@"%@", person);
+            return YES;
+        } bySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error]) {
+            NSLog(@"%@", error);
+            return 1;
         }
     }
     return 0;

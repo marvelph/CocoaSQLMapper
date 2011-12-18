@@ -26,4 +26,5 @@ NSString *const SMDatabaseErrorDomain;
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 
+- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error;
 @end

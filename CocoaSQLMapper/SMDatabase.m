@@ -150,6 +150,27 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return YES;
 }
 
+- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error
+{
+    if (![self executeBySQL:@"BEGIN TRANSACTION" parameter:nil error:error]) {
+        return NO;
+    }
+    
+    BOOL result = block(error);
+    
+    if (result) {
+        if (![self executeBySQL:@"COMMIT TRANSACTION" parameter:nil error:error]) {
+            return NO;
+        }
+    }
+    else {
+        if (![self executeBySQL:@"ROLLBACK TRANSACTION" parameter:nil error:error]) {
+            return NO;
+        }
+    }
+    return result;
+}
+
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error
 {
     sqlite3_stmt *statement;

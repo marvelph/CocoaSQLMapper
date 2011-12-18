@@ -7,11 +7,11 @@
 //
 
 //
-// $ sqlite3 ~/persons.sqlite
-// > CREATE TABLE Person(key INTEGER PRIMARY KEY, name, age, dateOfBirth);
-// > INSERT INTO Person(name, age, dateOfBirth) VALUES('Yamada', 25, NULL);
-// > INSERT INTO Person(name, age, dateOfBirth) VALUES('Satoh', NULL, 799599600.0);
-// > INSERT INTO Person(name, age, dateOfBirth) VALUES(NULL, 35, 971103600.0);
+// $ sqlite3 ~/Documents/persons.sqlite
+// > CREATE TABLE Person(key INTEGER PRIMARY KEY, name, age, dateOfBirth, married);
+// > INSERT INTO Person(name, age, dateOfBirth, married) VALUES('Yamada', 25, NULL, 0);
+// > INSERT INTO Person(name, age, dateOfBirth, married) VALUES('Satoh', NULL, 799599600.0, 1);
+// > INSERT INTO Person(name, age, dateOfBirth, married) VALUES(NULL, 35, 971103600.0, 0);
 //
 
 #import "Person.h"
@@ -22,26 +22,50 @@
 int main (int argc, const char * argv[])
 {
     @autoreleasepool {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"persons.sqlite"];
+        
         NSError *error = nil;
-        SMDatabase *database = [[SMDatabase alloc] initWithPath:@"~/persons.sqlite" error:&error];
+        SMDatabase *database = [[SMDatabase alloc] initWithPath:path error:&error];
+        if (!database) {
+            NSLog(@"%@", error);
+            return 1;
+        }
         
         Person *parameter = [[Person alloc] init];
         parameter.name = @"Yamada";
         Person *person = [database selectObjectBySQL:@"SELECT * FROM Person WHERE name = :name" parameter:parameter resultClass:[Person class] error:&error];
+        if (!person) {
+            NSLog(@"%@", error);
+            return 1;
+        }
         NSLog(@"%@", person);
 		
-        parameter.name = @"Yamada";
+        if (![database transactionWithBlock:^BOOL(NSError **err) {
+            parameter.name = @"Yamada";
+            parameter.age = 30;
+            NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
+            if (!count) {
+                return NO;
+            }
+            NSLog(@"%lu", count);
+            
+            parameter.name = @"Suzuki";
+            parameter.age = 45;
+            parameter.married = YES;
+            long long key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
+            if (!key) {
+                return NO;
+            }
+            NSLog(@"%qi", key);
+            
+            return YES;
+        } error:&error]) {
+            NSLog(@"%@", error);
+            return 1;
+        }
+        
         parameter.age = 30;
-        NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:&error];
-        NSLog(@"%lu", count);
-        
-        parameter.name = nil;
-        parameter.age = 45;
-        parameter.dateOfBirth = nil;
-        long long key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth) VALUES(:name, :age, :dateOfBirth)" parameter:parameter error:&error];
-        NSLog(@"%qi", key);
-        
-        parameter.age = 25;
         NSArray *persons = [database selectArrayBySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error];
         for (Person* person in persons) {
             NSLog(@"%@", person);

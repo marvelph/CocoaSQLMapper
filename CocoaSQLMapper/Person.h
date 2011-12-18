@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic) int age;
 @property (nonatomic, strong) NSDate *dateOfBirth;
+@property (nonatomic) BOOL married;
 
 @end

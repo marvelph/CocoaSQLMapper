@@ -243,129 +243,86 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     }
     
     for (SMBindParameter *bindParameter in bindParameters) {
+        int error_code = SQLITE_OK;
         if ([@"i" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
-            if (sqlite3_bind_int(statement, bindParameter.index, [number intValue]) != SQLITE_OK) {
-                if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                }
-                return NO;
-            }
+            error_code = sqlite3_bind_int(statement, bindParameter.index, [number intValue]);
         }
         else if ([@"q" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
-            if (sqlite3_bind_int64(statement, bindParameter.index, [number longLongValue]) != SQLITE_OK) {
-                if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                }
-                return NO;
-            }
+            error_code = sqlite3_bind_int64(statement, bindParameter.index, [number longLongValue]);
         }
         else if ([@"c" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
-            if (sqlite3_bind_int(statement, bindParameter.index, [number boolValue]) != SQLITE_OK) {
-                if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                }
-                return NO;
-            }
+            error_code = sqlite3_bind_int(statement, bindParameter.index, [number boolValue]);
         }
         else if ([@"f" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
-            if (sqlite3_bind_double(statement, bindParameter.index, [number floatValue]) != SQLITE_OK) {
-                if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                }
-                return NO;
-            }
+            error_code = sqlite3_bind_double(statement, bindParameter.index, [number floatValue]);
         }
         else if ([@"d" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
-            if (sqlite3_bind_double(statement, bindParameter.index, [number doubleValue]) != SQLITE_OK) {
-                if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+            error_code = sqlite3_bind_double(statement, bindParameter.index, [number doubleValue]);
+        }
+        else if ([@"@\"NSNumber\"" isEqual:bindParameter.type]) {
+            NSNumber *number = [parameter valueForKey:bindParameter.name];
+            if (number) {
+                switch (*[number objCType]) {
+                    case 'i':
+                        error_code = sqlite3_bind_int(statement, bindParameter.index, [number intValue]);
+                        break;
+                    case 'q':
+                        error_code = sqlite3_bind_int64(statement, bindParameter.index, [number longLongValue]);
+                        break;
+                    case 'c':
+                        error_code = sqlite3_bind_int(statement, bindParameter.index, [number boolValue]);
+                        break;
+                    case 'f':
+                        error_code = sqlite3_bind_double(statement, bindParameter.index, [number floatValue]);
+                        break;
+                    case 'd':
+                        error_code = sqlite3_bind_double(statement, bindParameter.index, [number doubleValue]);
+                        break;
                 }
-                return NO;
+            }
+            else {
+                error_code = sqlite3_bind_null(statement, bindParameter.index);
             }
         }
         else if ([@"@\"NSDate\"" isEqual:bindParameter.type]) {
             NSDate *date = [parameter valueForKey:bindParameter.name];
             if (date) {
-                if (sqlite3_bind_double(statement, bindParameter.index, [date timeIntervalSince1970]) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_double(statement, bindParameter.index, [date timeIntervalSince1970]);
             }
             else {
-                if (sqlite3_bind_null(statement, bindParameter.index) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_null(statement, bindParameter.index);
             }
         }
         else if ([@"@\"NSString\"" isEqual:bindParameter.type]) {
             NSString *string = [parameter valueForKey:bindParameter.name];
             if (string) {
-                if (sqlite3_bind_text(statement, bindParameter.index, [string UTF8String], -1, SQLITE_TRANSIENT) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_text(statement, bindParameter.index, [string UTF8String], -1, SQLITE_TRANSIENT);
             }
             else {
-                if (sqlite3_bind_null(statement, bindParameter.index) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_null(statement, bindParameter.index);
             }
         }
         else if ([@"@\"NSData\"" isEqual:bindParameter.type]) {
             NSData *data = [parameter valueForKey:bindParameter.name];
             if (data) {
-                if (sqlite3_bind_blob(statement, bindParameter.index, [data bytes], (int)[data length], SQLITE_TRANSIENT) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_blob(statement, bindParameter.index, [data bytes], (int)[data length], SQLITE_TRANSIENT);
             }
             else {
-                if (sqlite3_bind_null(statement, bindParameter.index) != SQLITE_OK) {
-                    if (error) {
-                        NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                        *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
-                    }
-                    return NO;
-                }
+                error_code = sqlite3_bind_null(statement, bindParameter.index);
             }
+        }
+        if (error_code != SQLITE_OK) {
+            if (error) {
+                NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
+                *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+            }
+            return NO;
         }
     }
     return YES;
@@ -424,6 +381,30 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                         double value = sqlite3_column_double(statement, column.index);
                         NSNumber *number = [NSNumber numberWithDouble:value];
                         [result setValue:number forKey:column.name];
+                    }
+                    else if ([@"@\"NSNumber\"" isEqual:column.type]) {
+                        switch (sqlite3_column_type(statement, column.index)) {
+                            case SQLITE_INTEGER: {
+                                long long value = sqlite3_column_int64(statement, column.index);
+                                NSNumber *number = [NSNumber numberWithLongLong:value];
+                                [result setValue:number forKey:column.name];
+                                break;
+                            }
+                            case SQLITE_FLOAT: {
+                                double value = sqlite3_column_double(statement, column.index);
+                                NSNumber *number = [NSNumber numberWithDouble:value];
+                                [result setValue:number forKey:column.name];
+                            }
+                            case SQLITE_NULL:
+                                [result setValue:nil forKey:column.name];
+                                break;
+                            default: {
+                                int value = sqlite3_column_int(statement, column.index);
+                                NSNumber *number = [NSNumber numberWithInt:value];
+                                [result setValue:number forKey:column.name];
+                                break;
+                            }
+                        }
                     }
                     else if ([@"@\"NSDate\"" isEqual:column.type]) {
                         if (sqlite3_column_type(statement, column.index) != SQLITE_NULL) {

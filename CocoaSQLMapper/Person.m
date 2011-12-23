@@ -17,7 +17,7 @@
 @synthesize married = _married;
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%i, dateOfBirth=%@, married=%i", _key, _name, _age, _dateOfBirth, _married];
+	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%@, dateOfBirth=%@, married=%i", _key, _name, _age, _dateOfBirth, _married];
 }
 
 @end

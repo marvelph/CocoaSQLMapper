@@ -43,7 +43,7 @@ int main (int argc, const char * argv[])
 		
         if (![database transactionWithBlock:^(NSError **err) {
             parameter.name = @"Yamada";
-            parameter.age = 30;
+            parameter.age = [NSNumber numberWithInt:30];
             NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
             if (!count) {
                 return NO;
@@ -51,7 +51,7 @@ int main (int argc, const char * argv[])
             NSLog(@"%lu", count);
             
             parameter.name = @"Suzuki";
-            parameter.age = 45;
+            parameter.age = [NSNumber numberWithInt:45];
             parameter.married = YES;
             long long key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
             if (!key) {
@@ -65,7 +65,7 @@ int main (int argc, const char * argv[])
             return 1;
         }
         
-        parameter.age = 30;
+        parameter.age = [NSNumber numberWithInt:30];
         NSArray *persons = [database selectArrayBySQL:@"SELECT * FROM Person WHERE age > :age" parameter:parameter resultClass:[Person class] error:&error];
         if (!persons) {
             NSLog(@"%@", error);

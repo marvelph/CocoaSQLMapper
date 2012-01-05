@@ -12,8 +12,6 @@
 		9460656F149B128D005C176B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9460656E149B128D005C176B /* main.m */; };
 		94606573149B128D005C176B /* CocoaSQLMapper.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94606572149B128D005C176B /* CocoaSQLMapper.1 */; };
 		94D335B7149B16F200941770 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B0149B16F200941770 /* Person.m */; };
-		94D335B8149B16F200941770 /* SMBindParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B2149B16F200941770 /* SMBindParameter.m */; };
-		94D335B9149B16F200941770 /* SMColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B4149B16F200941770 /* SMColumn.m */; };
 		94D335BA149B16F200941770 /* SMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D335B6149B16F200941770 /* SMDatabase.m */; };
 /* End PBXBuildFile section */
 
@@ -39,10 +37,6 @@
 		94606572149B128D005C176B /* CocoaSQLMapper.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CocoaSQLMapper.1; sourceTree = "<group>"; };
 		94D335AF149B16F200941770 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		94D335B0149B16F200941770 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
-		94D335B1149B16F200941770 /* SMBindParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBindParameter.h; sourceTree = "<group>"; };
-		94D335B2149B16F200941770 /* SMBindParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMBindParameter.m; sourceTree = "<group>"; };
-		94D335B3149B16F200941770 /* SMColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMColumn.h; sourceTree = "<group>"; };
-		94D335B4149B16F200941770 /* SMColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMColumn.m; sourceTree = "<group>"; };
 		94D335B5149B16F200941770 /* SMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMDatabase.h; sourceTree = "<group>"; };
 		94D335B6149B16F200941770 /* SMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMDatabase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,10 +85,6 @@
 			children = (
 				94D335AF149B16F200941770 /* Person.h */,
 				94D335B0149B16F200941770 /* Person.m */,
-				94D335B1149B16F200941770 /* SMBindParameter.h */,
-				94D335B2149B16F200941770 /* SMBindParameter.m */,
-				94D335B3149B16F200941770 /* SMColumn.h */,
-				94D335B4149B16F200941770 /* SMColumn.m */,
 				94D335B5149B16F200941770 /* SMDatabase.h */,
 				94D335B6149B16F200941770 /* SMDatabase.m */,
 				9460656E149B128D005C176B /* main.m */,
@@ -165,8 +155,6 @@
 			files = (
 				9460656F149B128D005C176B /* main.m in Sources */,
 				94D335B7149B16F200941770 /* Person.m in Sources */,
-				94D335B8149B16F200941770 /* SMBindParameter.m in Sources */,
-				94D335B9149B16F200941770 /* SMColumn.m in Sources */,
 				94D335BA149B16F200941770 /* SMDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

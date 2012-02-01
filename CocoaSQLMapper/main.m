@@ -44,20 +44,20 @@ int main (int argc, const char * argv[])
         if (![database transactionWithBlock:^(NSError **err) {
             parameter.name = @"Yamada";
             parameter.age = [NSNumber numberWithInt:30];
-            NSUInteger count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
-            if (count == SMDatabaseError) {
+            NSNumber *count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
+            if (count) {
                 return NO;
             }
-            NSLog(@"%lu", count);
+            NSLog(@"%i", [count intValue]);
             
             parameter.name = @"Suzuki";
             parameter.age = [NSNumber numberWithInt:45];
             parameter.married = YES;
-            long long key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
-            if (key == SMDatabaseError) {
+            NSNumber *key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
+            if (key) {
                 return NO;
             }
-            NSLog(@"%qi", key);
+            NSLog(@"%qi", [key longLongValue]);
             
             return YES;
         } error:&error]) {

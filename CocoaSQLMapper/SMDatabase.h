@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-enum {
-    SMDatabaseError = -1,
-};
-
 NSString *const SMDatabaseErrorDomain;
 
 @interface SMBindParameter : NSObject
@@ -42,9 +38,9 @@ NSString *const SMDatabaseErrorDomain;
 
 - (BOOL)selectWithBlock:(BOOL (^)(id rst))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 
-- (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
-- (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
-- (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (NSNumber *)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (NSNumber *)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (NSNumber *)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 

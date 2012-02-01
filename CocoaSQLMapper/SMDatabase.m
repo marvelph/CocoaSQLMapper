@@ -2,18 +2,31 @@
 //  SMDatabase.m
 //  CocoaSQLMapper
 //
-//  Copyright 2010-2011 Kenji Nishishiro. All rights reserved.
+//  Copyright 2010-2012 Kenji Nishishiro. All rights reserved.
 //  Written by Kenji Nishishiro <marvel@programmershigh.org>.
 //
 
 #import "SMDatabase.h"
 
-#import "SMBindParameter.h"
-#import "SMColumn.h"
-
 #import <objc/runtime.h>
 
 NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
+
+@implementation SMBindParameter
+
+@synthesize index = _index;
+@synthesize name = _name;
+@synthesize type = _type;
+
+@end
+
+@implementation SMColumn
+
+@synthesize index = _index;
+@synthesize name = _name;
+@synthesize type = _type;
+
+@end
 
 @interface SMDatabase ()
 

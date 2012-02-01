@@ -15,6 +15,22 @@ enum {
 
 NSString *const SMDatabaseErrorDomain;
 
+@interface SMBindParameter : NSObject
+
+@property (nonatomic) int index;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
+
+@end
+
+@interface SMColumn : NSObject
+
+@property (nonatomic) int index;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
+
+@end
+
 @interface SMDatabase : NSObject {
 	sqlite3 *_sqlite3;
 }

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
+enum {
+    SMDatabaseError = -1,
+};
+
 NSString *const SMDatabaseErrorDomain;
 
 @interface SMDatabase : NSObject {

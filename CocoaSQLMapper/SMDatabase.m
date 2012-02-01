@@ -138,7 +138,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 - (long long)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return 0;
+        return SMDatabaseError;
     }
     return sqlite3_last_insert_rowid(_sqlite3);
 }
@@ -146,7 +146,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return 0;
+        return SMDatabaseError;
     }
     return sqlite3_changes(_sqlite3);
 }
@@ -154,7 +154,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 - (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return 0;
+        return SMDatabaseError;
     }
     return sqlite3_changes(_sqlite3);
 }

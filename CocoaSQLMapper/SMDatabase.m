@@ -30,6 +30,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 @interface SMDatabase ()
 
+- (NSError *)errorWithLastSQLiteError;
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error;
 - (BOOL)bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error;
 - (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst))block resultClass:(Class)resultClass error:(NSError **)error;
@@ -46,9 +47,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     if (self = [super init]) {
         if (sqlite3_open([path UTF8String], &_sqlite3) != SQLITE_OK) {
             if (error) {
-                NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+                *error = [self errorWithLastSQLiteError];
             }
             return nil;
         }
@@ -71,25 +70,28 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         return nil;
     }
     
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
+    @try {
+        if (parameter) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
+                return nil;
+            }
+        }
+        
+        __block id result = nil;
+        if (![self fetchStatement:statement block:^BOOL(id rst) {
+            NSAssert(!result, @"Multiple result rows.");
+            
+            result = rst;
+            return YES;
+        } resultClass:resultClass error:error]) {
             return nil;
         }
-    }
-    
-    __block id result = nil;
-    if (![self fetchStatement:statement block:^BOOL(id rst) {
-        NSAssert(!result, @"Multiple result rows.");
         
-        result = rst;
-        return YES;
-    } resultClass:resultClass error:error]) {
-        sqlite3_finalize(statement);
-        return nil;
+        return result;
     }
-    
-    sqlite3_finalize(statement);
-    return result;
+    @finally {
+        sqlite3_finalize(statement);
+    }
 }
 
 - (NSArray *)selectArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
@@ -102,24 +104,25 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         return nil;
     }
     
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
-            sqlite3_finalize(statement);
+    @try {
+        if (parameter) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
+                return nil;
+            }
+        }
+        
+        NSMutableArray* results = [NSMutableArray array];
+        if (![self fetchStatement:statement block:^BOOL(id rst) {
+            [results addObject:rst];
+            return YES;
+        } resultClass:resultClass error:error]) {
             return nil;
         }
+        return results;
     }
-    
-    NSMutableArray* results = [NSMutableArray array];
-    if (![self fetchStatement:statement block:^BOOL(id rst) {
-        [results addObject:rst];
-        return YES;
-    } resultClass:resultClass error:error]) {
+    @finally {
         sqlite3_finalize(statement);
-        return nil;
     }
-    
-    sqlite3_finalize(statement);
-    return results;
 }
 
 - (BOOL)selectWithBlock:(BOOL (^)(id result))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
@@ -132,20 +135,18 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         return NO;
     }
     
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
-            sqlite3_finalize(statement);
-            return NO;
+    @try {
+        if (parameter) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
+                return NO;
+            }
         }
+        
+        return [self fetchStatement:statement block:block resultClass:resultClass error:error];
     }
-    
-    if (![self fetchStatement:statement block:block resultClass:resultClass error:error]) {
+    @finally {
         sqlite3_finalize(statement);
-        return NO;
     }
-    
-    sqlite3_finalize(statement);
-    return YES;
 }
 
 - (NSNumber *)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
@@ -181,20 +182,18 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         return NO;
     }
     
-    if (parameter) {
-        if (![self bindStatement:statement parameter:parameter error:error]) {
-            sqlite3_finalize(statement);
-            return NO;
+    @try {
+        if (parameter) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
+                return NO;
+            }
         }
+        
+        return [self executeStatement:statement error:error];
     }
-    
-    if (![self executeStatement:statement error:error]) {
+    @finally {
         sqlite3_finalize(statement);
-        return NO;
     }
-    
-    sqlite3_finalize(statement);
-    return YES;
 }
 
 - (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error
@@ -203,19 +202,20 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         return NO;
     }
     
-    BOOL result = block(error);
-    
-    if (result) {
-        if (![self executeBySQL:@"COMMIT TRANSACTION" parameter:nil error:error]) {
-            return NO;
-        }
+    if (block(error)) {
+        return [self executeBySQL:@"COMMIT TRANSACTION" parameter:nil error:error];
     }
     else {
-        if (![self executeBySQL:@"ROLLBACK TRANSACTION" parameter:nil error:error]) {
-            return NO;
-        }
+        [self executeBySQL:@"ROLLBACK TRANSACTION" parameter:nil error:error];
+        return NO;
     }
-    return result;
+}
+
+- (NSError *)errorWithLastSQLiteError
+{
+    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
+    return [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
 }
 
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error
@@ -223,9 +223,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     sqlite3_stmt *statement;
     if (sqlite3_prepare(_sqlite3, [SQL UTF8String], -1, &statement, NULL) != SQLITE_OK) {
         if (error) {
-            NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-            *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+            *error = [self errorWithLastSQLiteError];
         }
         return NULL;
     }
@@ -331,9 +329,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
         if (error_code != SQLITE_OK) {
             if (error) {
-                NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+                *error = [self errorWithLastSQLiteError];
             }
             return NO;
         }
@@ -461,9 +457,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                 break;
             case SQLITE_ERROR:
                 if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+                    *error = [self errorWithLastSQLiteError];
                 }
                 return NO;
             case SQLITE_MISUSE:
@@ -486,9 +480,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                 break;
             case SQLITE_ERROR:
                 if (error) {
-                    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-                    *error = [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+                    *error = [self errorWithLastSQLiteError];
                 }
                 return NO;
             case SQLITE_MISUSE:

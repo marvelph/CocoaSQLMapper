@@ -149,28 +149,28 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     }
 }
 
-- (NSNumber *)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
+- (long long int)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return nil;
+        return 0;
     }
-    return [NSNumber numberWithLongLong:sqlite3_last_insert_rowid(_sqlite3)];
+    return sqlite3_last_insert_rowid(_sqlite3);
 }
 
-- (NSNumber *)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
+- (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return nil;
+        return 0;
     }
-    return [NSNumber numberWithInt:sqlite3_changes(_sqlite3)];
+    return sqlite3_changes(_sqlite3);
 }
 
-- (NSNumber *)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
+- (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
 {
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
-        return nil;
+        return 0;
     }
-    return [NSNumber numberWithInt:sqlite3_changes(_sqlite3)];
+    return sqlite3_changes(_sqlite3);
 }
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
@@ -196,13 +196,13 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     }
 }
 
-- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error
+- (BOOL)transactionWithBlock:(BOOL (^)())block error:(NSError **)error
 {
     if (![self executeBySQL:@"BEGIN TRANSACTION" parameter:nil error:error]) {
         return NO;
     }
     
-    if (block(error)) {
+    if (block()) {
         return [self executeBySQL:@"COMMIT TRANSACTION" parameter:nil error:error];
     }
     else {

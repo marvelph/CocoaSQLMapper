@@ -38,11 +38,11 @@ NSString *const SMDatabaseErrorDomain;
 
 - (BOOL)selectWithBlock:(BOOL (^)(id rst))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 
-- (NSNumber *)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
-- (NSNumber *)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
-- (NSNumber *)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (long long int)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
+- (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 
-- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error;
+- (BOOL)transactionWithBlock:(BOOL (^)())block error:(NSError **)error;
 @end

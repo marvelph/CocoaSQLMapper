@@ -25,7 +25,7 @@ int main (int argc, const char * argv[])
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"persons.sqlite"];
         
-        NSError *error = nil;
+        __block NSError *error = nil;
         SMDatabase *database = [[SMDatabase alloc] initWithPath:path error:&error];
         if (!database) {
             NSLog(@"%@", error);
@@ -41,23 +41,23 @@ int main (int argc, const char * argv[])
         }
         NSLog(@"%@", person);
 		
-        if (![database transactionWithBlock:^(NSError **err) {
+        if (![database transactionWithBlock:^() {
             parameter.name = @"Yamada";
             parameter.age = [NSNumber numberWithInt:30];
-            NSNumber *count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
+            int count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:&error];
             if (count) {
                 return NO;
             }
-            NSLog(@"%i", [count intValue]);
+            NSLog(@"%i", count);
             
             parameter.name = @"Suzuki";
             parameter.age = [NSNumber numberWithInt:45];
             parameter.married = YES;
-            NSNumber *key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
+            long long int key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:&error];
             if (key) {
                 return NO;
             }
-            NSLog(@"%qi", [key longLongValue]);
+            NSLog(@"%qi", key);
             
             return YES;
         } error:&error]) {

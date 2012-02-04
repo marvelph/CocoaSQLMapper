@@ -33,7 +33,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 - (NSError *)errorWithLastSQLiteError;
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error;
 - (BOOL)bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error;
-- (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst))block resultClass:(Class)resultClass error:(NSError **)error;
+- (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst, NSError **err))block resultClass:(Class)resultClass error:(NSError **)error;
 - (BOOL)executeStatement:(sqlite3_stmt *)statement error:(NSError **)error;
 
 @end
@@ -78,7 +78,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
         
         __block id result = nil;
-        if (![self fetchStatement:statement block:^BOOL(id rst) {
+        if (![self fetchStatement:statement block:^BOOL(id rst, NSError **err) {
             NSAssert(!result, @"Multiple result rows.");
             
             result = rst;
@@ -112,7 +112,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
         }
         
         NSMutableArray* results = [NSMutableArray array];
-        if (![self fetchStatement:statement block:^BOOL(id rst) {
+        if (![self fetchStatement:statement block:^BOOL(id rst, NSError **err) {
             [results addObject:rst];
             return YES;
         } resultClass:resultClass error:error]) {
@@ -125,7 +125,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     }
 }
 
-- (BOOL)selectWithBlock:(BOOL (^)(id result))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
+- (BOOL)selectWithBlock:(BOOL (^)(id result, NSError **err))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
     NSParameterAssert(SQL);
     NSParameterAssert(resultClass);
@@ -196,13 +196,13 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     }
 }
 
-- (BOOL)transactionWithBlock:(BOOL (^)())block error:(NSError **)error
+- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error
 {
     if (![self executeBySQL:@"BEGIN TRANSACTION" parameter:nil error:error]) {
         return NO;
     }
     
-    if (block()) {
+    if (block(error)) {
         return [self executeBySQL:@"COMMIT TRANSACTION" parameter:nil error:error];
     }
     else {
@@ -337,7 +337,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     return YES;
 }
 
-- (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst))block resultClass:(Class)resultClass error:(NSError **)error
+- (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst, NSError **err))block resultClass:(Class)resultClass error:(NSError **)error
 {
     NSMutableArray *columns = [NSMutableArray array];
     int numberOfColumns = sqlite3_column_count(statement);
@@ -451,7 +451,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                         }
                     }
                 }
-                if (!block(result)) {
+                if (!block(result, error)) {
                     return NO;
                 }
                 break;

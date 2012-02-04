@@ -36,7 +36,7 @@ NSString *const SMDatabaseErrorDomain;
 - (id)selectObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 - (NSArray *)selectArrayBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 
-- (BOOL)selectWithBlock:(BOOL (^)(id rst))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
+- (BOOL)selectWithBlock:(BOOL (^)(id rst, NSError **err))block bySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error;
 
 - (long long int)insertBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
@@ -44,5 +44,6 @@ NSString *const SMDatabaseErrorDomain;
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error;
 
-- (BOOL)transactionWithBlock:(BOOL (^)())block error:(NSError **)error;
+- (BOOL)transactionWithBlock:(BOOL (^)(NSError **err))block error:(NSError **)error;
+
 @end

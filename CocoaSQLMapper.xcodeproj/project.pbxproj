@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		94406E9A149B43E400AC5227 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 94406E99149B43E400AC5227 /* libsqlite3.dylib */; };
+		9455C47314E78629001B46B5 /* Count.m in Sources */ = {isa = PBXBuildFile; fileRef = 9455C47214E78629001B46B5 /* Count.m */; };
 		9460656C149B128D005C176B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9460656B149B128D005C176B /* Foundation.framework */; };
 		9460656F149B128D005C176B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9460656E149B128D005C176B /* main.m */; };
 		94606573149B128D005C176B /* CocoaSQLMapper.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94606572149B128D005C176B /* CocoaSQLMapper.1 */; };
@@ -30,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		94406E99149B43E400AC5227 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		9455C47114E78629001B46B5 /* Count.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Count.h; sourceTree = "<group>"; };
+		9455C47214E78629001B46B5 /* Count.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Count.m; sourceTree = "<group>"; };
 		94606567149B128D005C176B /* CocoaSQLMapper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CocoaSQLMapper; sourceTree = BUILT_PRODUCTS_DIR; };
 		9460656B149B128D005C176B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9460656E149B128D005C176B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 			children = (
 				94D335AF149B16F200941770 /* Person.h */,
 				94D335B0149B16F200941770 /* Person.m */,
+				9455C47114E78629001B46B5 /* Count.h */,
+				9455C47214E78629001B46B5 /* Count.m */,
 				94D335B5149B16F200941770 /* SMDatabase.h */,
 				94D335B6149B16F200941770 /* SMDatabase.m */,
 				9460656E149B128D005C176B /* main.m */,
@@ -156,6 +161,7 @@
 				9460656F149B128D005C176B /* main.m in Sources */,
 				94D335B7149B16F200941770 /* Person.m in Sources */,
 				94D335BA149B16F200941770 /* SMDatabase.m in Sources */,
+				9455C47314E78629001B46B5 /* Count.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

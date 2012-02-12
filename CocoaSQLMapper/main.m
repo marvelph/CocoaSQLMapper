@@ -15,6 +15,7 @@
 //
 
 #import "Person.h"
+#import "Count.h"
 #import "SMDatabase.h"
 
 #import <Foundation/Foundation.h>
@@ -45,7 +46,7 @@ int main (int argc, const char * argv[])
             parameter.name = @"Yamada";
             parameter.age = [NSNumber numberWithInt:30];
             int count = [database updateBySQL:@"UPDATE Person SET age = :age WHERE name = :name" parameter:parameter error:err];
-            if (count) {
+            if (!count) {
                 return NO;
             }
             NSLog(@"%i", count);
@@ -54,7 +55,7 @@ int main (int argc, const char * argv[])
             parameter.age = [NSNumber numberWithInt:45];
             parameter.married = YES;
             long long int key = [database insertBySQL:@"INSERT INTO Person (name, age, dateOfBirth, married) VALUES(:name, :age, :dateOfBirth, :married)" parameter:parameter error:err];
-            if (key) {
+            if (!key) {
                 return NO;
             }
             NSLog(@"%qi", key);
@@ -82,6 +83,13 @@ int main (int argc, const char * argv[])
             NSLog(@"%@", error);
             return 1;
         }
+        
+        Count *count = [database selectObjectBySQL:@"SELECT COUNT(*) AS value FROM Person" parameter:parameter resultClass:[Count class] error:&error];
+        if (!count) {
+            NSLog(@"%@", error);
+            return 1;
+        }
+        NSLog(@"%@", count);
     }
     return 0;
 }

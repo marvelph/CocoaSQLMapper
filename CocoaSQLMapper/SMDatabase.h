@@ -11,11 +11,7 @@
 
 NSString *const SMDatabaseErrorDomain;
 
-@interface SMBindParameter : NSObject {
-    int _index;
-    NSString *_name;
-    NSString *_type;
-}
+@interface SMBindParameter : NSObject
 
 @property (nonatomic) int index;
 @property (nonatomic, strong) NSString *name;
@@ -23,11 +19,7 @@ NSString *const SMDatabaseErrorDomain;
 
 @end
 
-@interface SMColumn : NSObject {
-    int _index;
-    NSString *_name;
-    NSString *_type;
-}
+@interface SMColumn : NSObject
 
 @property (nonatomic) int index;
 @property (nonatomic, strong) NSString *name;

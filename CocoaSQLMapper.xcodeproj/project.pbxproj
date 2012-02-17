@@ -133,7 +133,7 @@
 		9460655E149B128D005C176B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "株式会社インサイト・プラス";
 			};
 			buildConfigurationList = 94606561149B128D005C176B /* Build configuration list for PBXProject "CocoaSQLMapper" */;

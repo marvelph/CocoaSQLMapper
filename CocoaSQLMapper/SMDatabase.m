@@ -12,23 +12,41 @@
 
 NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
+@interface SMBindParameter : NSObject
+
+@property (nonatomic) int index;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
+
+@end
+
 @implementation SMBindParameter
 
-@synthesize index = _index;
-@synthesize name = _name;
-@synthesize type = _type;
+@synthesize index;
+@synthesize name;
+@synthesize type;
+
+@end
+
+@interface SMColumn : NSObject
+
+@property (nonatomic) int index;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
 
 @end
 
 @implementation SMColumn
 
-@synthesize index = _index;
-@synthesize name = _name;
-@synthesize type = _type;
+@synthesize index;
+@synthesize name;
+@synthesize type;
 
 @end
 
 @interface SMDatabase ()
+
+@property (nonatomic) sqlite3 *sqlite;
 
 - (NSError *)errorWithLastSQLiteError;
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error;
@@ -45,7 +63,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     NSParameterAssert(path);
     
     if (self = [super init]) {
-        if (sqlite3_open([path UTF8String], &_sqlite3) != SQLITE_OK) {
+        if (sqlite3_open([path UTF8String], &sqlite) != SQLITE_OK) {
             if (error) {
                 *error = [self errorWithLastSQLiteError];
             }
@@ -57,8 +75,10 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (void)dealloc
 {
-    sqlite3_close(_sqlite3);
+    sqlite3_close(self.sqlite);
 }
+
+@synthesize sqlite;
 
 - (id)selectObjectBySQL:(NSString *)SQL parameter:(id)parameter resultClass:(Class)resultClass error:(NSError **)error
 {
@@ -154,7 +174,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
         return 0;
     }
-    return sqlite3_last_insert_rowid(_sqlite3);
+    return sqlite3_last_insert_rowid(self.sqlite);
 }
 
 - (int)updateBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
@@ -162,7 +182,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
         return 0;
     }
-    return sqlite3_changes(_sqlite3);
+    return sqlite3_changes(self.sqlite);
 }
 
 - (int)deleteBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
@@ -170,7 +190,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     if (![self executeBySQL:SQL parameter:parameter error:error]) {
         return 0;
     }
-    return sqlite3_changes(_sqlite3);
+    return sqlite3_changes(self.sqlite);
 }
 
 - (BOOL)executeBySQL:(NSString *)SQL parameter:(id)parameter error:(NSError **)error
@@ -213,15 +233,15 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (NSError *)errorWithLastSQLiteError
 {
-    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite3)];
+    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(self.sqlite)];
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
-    return [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite3) userInfo:userInfo];
+    return [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(self.sqlite) userInfo:userInfo];
 }
 
 - (sqlite3_stmt *)prepareSQL:(NSString *)SQL error:(NSError **)error
 {
     sqlite3_stmt *statement;
-    if (sqlite3_prepare(_sqlite3, [SQL UTF8String], -1, &statement, NULL) != SQLITE_OK) {
+    if (sqlite3_prepare(self.sqlite, [SQL UTF8String], -1, &statement, NULL) != SQLITE_OK) {
         if (error) {
             *error = [self errorWithLastSQLiteError];
         }

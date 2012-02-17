@@ -9,27 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-NSString *const SMDatabaseErrorDomain;
+extern NSString *const SMDatabaseErrorDomain;
 
-@interface SMBindParameter : NSObject
-
-@property (nonatomic) int index;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *type;
-
-@end
-
-@interface SMColumn : NSObject
-
-@property (nonatomic) int index;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *type;
-
-@end
-
-@interface SMDatabase : NSObject {
-	sqlite3 *_sqlite3;
-}
+@interface SMDatabase : NSObject
 
 - (id)initWithPath:(NSString *)path error:(NSError **)error;
 

@@ -10,14 +10,14 @@
 
 @implementation Person
 
-@synthesize key = _key;
-@synthesize name = _name;
-@synthesize age = _age;
-@synthesize dateOfBirth = _dateOfBirth;
-@synthesize married = _married;
+@synthesize key;
+@synthesize name;
+@synthesize age;
+@synthesize dateOfBirth;
+@synthesize married;
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%@, dateOfBirth=%@, married=%i", _key, _name, _age, _dateOfBirth, _married];
+	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%@, dateOfBirth=%@, married=%i", self.key, self.name, self.age, self.dateOfBirth, self.married];
 }
 
 @end

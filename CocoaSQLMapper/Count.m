@@ -10,10 +10,10 @@
 
 @implementation Count
 
-@synthesize value = _value;
+@synthesize value;
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"value=%i", _value];
+	return [NSString stringWithFormat:@"value=%i", self.value];
 }
 
 @end

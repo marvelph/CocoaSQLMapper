@@ -8,6 +8,7 @@
 
 #import "SMDatabase.h"
 
+#import <sqlite3.h>
 #import <objc/runtime.h>
 
 NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";

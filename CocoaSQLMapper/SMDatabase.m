@@ -13,7 +13,7 @@
 
 NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
-@interface _SMBindParameter : NSObject
+@interface SMBindParameter : NSObject
 
 @property (nonatomic) int index;
 @property (nonatomic, strong) NSString *name;
@@ -21,7 +21,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 @end
 
-@implementation _SMBindParameter
+@implementation SMBindParameter
 
 @synthesize index = _index;
 @synthesize name = _name;
@@ -29,7 +29,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 @end
 
-@interface _SMColumn : NSObject
+@interface SMColumn : NSObject
 
 @property (nonatomic) int index;
 @property (nonatomic, strong) NSString *name;
@@ -37,7 +37,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 @end
 
-@implementation _SMColumn
+@implementation SMColumn
 
 @synthesize index = _index;
 @synthesize name = _name;
@@ -45,9 +45,9 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 @end
 
-@implementation SMDatabase
-
-sqlite3 *_sqlite;
+@implementation SMDatabase {
+    sqlite3 *_sqlite;
+}
 
 - (id)initWithPath:(NSString *)path error:(NSError **)error
 {
@@ -81,13 +81,13 @@ sqlite3 *_sqlite;
     
     @try {
         if (parameter) {
-            if (![self _bindStatement:statement parameter:parameter error:error]) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
                 return nil;
             }
         }
         
         __block id result = nil;
-        if (![self _fetchStatement:statement block:^BOOL(id rst, NSError **err) {
+        if (![self fetchStatement:statement block:^BOOL(id rst, NSError **err) {
             NSAssert(!result, @"Multiple result rows.");
             
             result = rst;
@@ -115,13 +115,13 @@ sqlite3 *_sqlite;
     
     @try {
         if (parameter) {
-            if (![self _bindStatement:statement parameter:parameter error:error]) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
                 return nil;
             }
         }
         
         NSMutableArray* results = [NSMutableArray array];
-        if (![self _fetchStatement:statement block:^BOOL(id rst, NSError **err) {
+        if (![self fetchStatement:statement block:^BOOL(id rst, NSError **err) {
             [results addObject:rst];
             return YES;
         } resultClass:resultClass error:error]) {
@@ -146,12 +146,12 @@ sqlite3 *_sqlite;
     
     @try {
         if (parameter) {
-            if (![self _bindStatement:statement parameter:parameter error:error]) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
                 return NO;
             }
         }
         
-        return [self _fetchStatement:statement block:block resultClass:resultClass error:error];
+        return [self fetchStatement:statement block:block resultClass:resultClass error:error];
     }
     @finally {
         sqlite3_finalize(statement);
@@ -193,12 +193,12 @@ sqlite3 *_sqlite;
     
     @try {
         if (parameter) {
-            if (![self _bindStatement:statement parameter:parameter error:error]) {
+            if (![self bindStatement:statement parameter:parameter error:error]) {
                 return NO;
             }
         }
         
-        return [self _executeStatement:statement error:error];
+        return [self executeStatement:statement error:error];
     }
     @finally {
         sqlite3_finalize(statement);
@@ -239,7 +239,7 @@ sqlite3 *_sqlite;
     return statement;
 }
 
-- (BOOL)_bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error
+- (BOOL)bindStatement:(sqlite3_stmt *)statement parameter:(id)parameter error:(NSError **)error
 {
     NSMutableArray *bindParameters = [NSMutableArray array];
     int numberOfBindParameters = sqlite3_bind_parameter_count(statement);
@@ -253,7 +253,7 @@ sqlite3 *_sqlite;
                 NSRange range = [attributes rangeOfString:@","];
                 NSString *type = [attributes substringWithRange:NSMakeRange(1, range.location - 1)];
                 
-                _SMBindParameter *bindParameter = [[_SMBindParameter alloc] init];
+                SMBindParameter *bindParameter = [[SMBindParameter alloc] init];
                 bindParameter.index = index;
                 bindParameter.name = name;
                 bindParameter.type = type;
@@ -262,7 +262,7 @@ sqlite3 *_sqlite;
         }
     }
     
-    for (_SMBindParameter *bindParameter in bindParameters) {
+    for (SMBindParameter *bindParameter in bindParameters) {
         int error_code = SQLITE_OK;
         if ([@"i" isEqual:bindParameter.type]) {
             NSNumber *number = [parameter valueForKey:bindParameter.name];
@@ -346,7 +346,7 @@ sqlite3 *_sqlite;
     return YES;
 }
 
-- (BOOL)_fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst, NSError **err))block resultClass:(Class)resultClass error:(NSError **)error
+- (BOOL)fetchStatement:(sqlite3_stmt *)statement block:(BOOL (^)(id rst, NSError **err))block resultClass:(Class)resultClass error:(NSError **)error
 {
     NSMutableArray *columns = [NSMutableArray array];
     int numberOfColumns = sqlite3_column_count(statement);
@@ -358,7 +358,7 @@ sqlite3 *_sqlite;
             NSRange range = [attributes rangeOfString:@","];
             NSString *type = [attributes substringWithRange:NSMakeRange(1, range.location - 1)];
             
-            _SMColumn *column = [[_SMColumn alloc] init];
+            SMColumn *column = [[SMColumn alloc] init];
             column.index = index;
             column.name = name;
             column.type = type;
@@ -374,7 +374,7 @@ sqlite3 *_sqlite;
                 break;
             case SQLITE_ROW:
                 result = [[resultClass alloc] init];
-                for (_SMColumn *column in columns) {
+                for (SMColumn *column in columns) {
                     if ([@"i" isEqual:column.type]) {
                         int value = sqlite3_column_int(statement, column.index);
                         NSNumber *number = [NSNumber numberWithInt:value];
@@ -477,7 +477,7 @@ sqlite3 *_sqlite;
     return YES;
 }
 
-- (BOOL)_executeStatement:(sqlite3_stmt *)statement error:(NSError **)error
+- (BOOL)executeStatement:(sqlite3_stmt *)statement error:(NSError **)error
 {
     int status;
     while ((status = sqlite3_step(statement)) != SQLITE_DONE) {

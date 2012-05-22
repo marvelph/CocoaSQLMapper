@@ -420,6 +420,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                                 int value = sqlite3_column_int(statement, column.index);
                                 NSNumber *number = [NSNumber numberWithInt:value];
                                 [result setValue:number forKey:column.name];
+                                break;
                             }
                         }
                     }

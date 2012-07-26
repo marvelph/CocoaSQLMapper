@@ -133,8 +133,8 @@
 		9460655E149B128D005C176B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
-				ORGANIZATIONNAME = "株式会社インサイト・プラス";
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "";
 			};
 			buildConfigurationList = 94606561149B128D005C176B /* Build configuration list for PBXProject "CocoaSQLMapper" */;
 			compatibilityVersion = "Xcode 3.2";

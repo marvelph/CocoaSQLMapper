@@ -10,12 +10,6 @@
 
 @implementation Person
 
-@synthesize key;
-@synthesize name;
-@synthesize age;
-@synthesize dateOfBirth;
-@synthesize married;
-
 - (NSString *)description {
 	return [NSString stringWithFormat:@"key=%qi, name=%@, age=%@, dateOfBirth=%@, married=%i", self.key, self.name, self.age, self.dateOfBirth, self.married];
 }

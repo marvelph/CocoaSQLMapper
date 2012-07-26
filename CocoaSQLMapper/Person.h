@@ -11,9 +11,9 @@
 @interface Person : NSObject
 
 @property (nonatomic) long long key;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *age;
-@property (nonatomic, strong) NSDate *dateOfBirth;
+@property (nonatomic) NSString *name;
+@property (nonatomic) NSNumber *age;
+@property (nonatomic) NSDate *dateOfBirth;
 @property (nonatomic) BOOL married;
 
 @end

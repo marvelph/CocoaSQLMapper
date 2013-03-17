@@ -8,14 +8,16 @@ Kenji Nishishiro <marvel@programmershigh.org>
 FIXME
 
 - How to use CocoaSQLMapper
-FIXME
+See presentation.
+http://www.slideshare.net/marvelph/introduction-to-cocoa-sql-mapper
 
 - Todo
 Support NSDictionary parameter.
+Support NSDecimal property.
 
 - Licence
 
-Copyright (c) 2010-2012 Kenji Nishishiro
+Copyright (c) 2010-2013 Kenji Nishishiro
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

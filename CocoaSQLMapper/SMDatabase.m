@@ -2,7 +2,7 @@
 //  SMDatabase.m
 //  CocoaSQLMapper
 //
-//  Copyright 2010-2012 Kenji Nishishiro. All rights reserved.
+//  Copyright 2010-2013 Kenji Nishishiro. All rights reserved.
 //  Written by Kenji Nishishiro <marvel@programmershigh.org>.
 //
 
@@ -16,24 +16,32 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 @interface SMBindParameter : NSObject
 
 @property (nonatomic) int index;
-@property (nonatomic) NSString *name;
-@property (nonatomic) NSString *type;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
 
 @end
 
 @implementation SMBindParameter
+
+@synthesize index = _index;
+@synthesize name = _name;
+@synthesize type = _type;
 
 @end
 
 @interface SMColumn : NSObject
 
 @property (nonatomic) int index;
-@property (nonatomic) NSString *name;
-@property (nonatomic) NSString *type;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
 
 @end
 
 @implementation SMColumn
+
+@synthesize index = _index;
+@synthesize name = _name;
+@synthesize type = _type;
 
 @end
 
@@ -214,8 +222,8 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
 
 - (NSError *)errorWithLastSQLiteError
 {
-    NSString *description = @(sqlite3_errmsg(_sqlite));
-    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: description};
+    NSString *description = [NSString stringWithUTF8String:sqlite3_errmsg(_sqlite)];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
     return [NSError errorWithDomain:SMDatabaseErrorDomain code:sqlite3_errcode(_sqlite) userInfo:userInfo];
 }
 
@@ -238,10 +246,10 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     for (int index = 1; index <= numberOfBindParameters; index++) {
         const char* nameAsCString = sqlite3_bind_parameter_name(statement, index);
         if (nameAsCString) {
-            NSString *name = @(nameAsCString + 1);
+            NSString *name = [NSString stringWithUTF8String:nameAsCString + 1];
             objc_property_t property = class_getProperty([parameter class], [name UTF8String]);
             if (property) {
-                NSString *attributes = @(property_getAttributes(property));
+                NSString *attributes = [NSString stringWithUTF8String:property_getAttributes(property)];
                 NSRange range = [attributes rangeOfString:@","];
                 NSString *type = [attributes substringWithRange:NSMakeRange(1, range.location - 1)];
                 
@@ -301,6 +309,15 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                 error_code = sqlite3_bind_null(statement, bindParameter.index);
             }
         }
+        else if ([@"@\"NSDecimalNumber\"" isEqual:bindParameter.type]) {
+            NSDecimalNumber *number = [parameter valueForKey:bindParameter.name];
+            if (number) {
+                error_code = sqlite3_bind_text(statement, bindParameter.index, [[number description] UTF8String], -1, SQLITE_TRANSIENT);
+            }
+            else {
+                error_code = sqlite3_bind_null(statement, bindParameter.index);
+            }
+        }
         else if ([@"@\"NSDate\"" isEqual:bindParameter.type]) {
             NSDate *date = [parameter valueForKey:bindParameter.name];
             if (date) {
@@ -343,10 +360,10 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
     NSMutableArray *columns = [NSMutableArray array];
     int numberOfColumns = sqlite3_column_count(statement);
     for (int index = 0; index < numberOfColumns; index++) {
-        NSString *name = @(sqlite3_column_name(statement, index));
+        NSString *name = [NSString stringWithUTF8String:sqlite3_column_name(statement, index)];
         objc_property_t property = class_getProperty(resultClass, [name UTF8String]);
         if (property) {
-            NSString *attributes = @(property_getAttributes(property));
+            NSString *attributes = [NSString stringWithUTF8String:property_getAttributes(property)];
             NSRange range = [attributes rangeOfString:@","];
             NSString *type = [attributes substringWithRange:NSMakeRange(1, range.location - 1)];
             
@@ -369,40 +386,40 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                 for (SMColumn *column in columns) {
                     if ([@"i" isEqual:column.type]) {
                         int value = sqlite3_column_int(statement, column.index);
-                        NSNumber *number = @(value);
+                        NSNumber *number = [NSNumber numberWithInt:value];
                         [result setValue:number forKey:column.name];
                     }
                     else if ([@"q" isEqual:column.type]) {
                         long long value = sqlite3_column_int64(statement, column.index);
-                        NSNumber *number = @(value);
+                        NSNumber *number = [NSNumber numberWithLongLong:value];
                         [result setValue:number forKey:column.name];
                     }
                     else if ([@"c" isEqual:column.type]) {
                         BOOL value = sqlite3_column_int(statement, column.index);
-                        NSNumber *number = @(value);
+                        NSNumber *number = [NSNumber numberWithBool:value];
                         [result setValue:number forKey:column.name];
                     }
                     else if ([@"f" isEqual:column.type]) {
                         float value = sqlite3_column_double(statement, column.index);
-                        NSNumber *number = @(value);
+                        NSNumber *number = [NSNumber numberWithFloat:value];
                         [result setValue:number forKey:column.name];
                     }
                     else if ([@"d" isEqual:column.type]) {
                         double value = sqlite3_column_double(statement, column.index);
-                        NSNumber *number = @(value);
+                        NSNumber *number = [NSNumber numberWithDouble:value];
                         [result setValue:number forKey:column.name];
                     }
                     else if ([@"@\"NSNumber\"" isEqual:column.type]) {
                         switch (sqlite3_column_type(statement, column.index)) {
                             case SQLITE_INTEGER: {
                                 long long value = sqlite3_column_int64(statement, column.index);
-                                NSNumber *number = @(value);
+                                NSNumber *number = [NSNumber numberWithLongLong:value];
                                 [result setValue:number forKey:column.name];
                                 break;
                             }
                             case SQLITE_FLOAT: {
                                 double value = sqlite3_column_double(statement, column.index);
-                                NSNumber *number = @(value);
+                                NSNumber *number = [NSNumber numberWithDouble:value];
                                 [result setValue:number forKey:column.name];
                             }
                             case SQLITE_NULL:
@@ -410,10 +427,22 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                                 break;
                             default: {
                                 int value = sqlite3_column_int(statement, column.index);
-                                NSNumber *number = @(value);
+                                NSNumber *number = [NSNumber numberWithInt:value];
                                 [result setValue:number forKey:column.name];
                                 break;
                             }
+                        }
+                    }
+                    else if ([@"@\"NSDecimalNumber\"" isEqual:column.type]) {
+                        if (sqlite3_column_type(statement, column.index) != SQLITE_NULL) {
+                            const char *value = (const char *)sqlite3_column_text(statement, column.index);
+                            if (value) {
+                                NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:[NSString stringWithUTF8String:value]];
+                                [result setValue:number forKey:column.name];
+                            }
+                        }
+                        else {
+                            [result setValue:nil forKey:column.name];
                         }
                     }
                     else if ([@"@\"NSDate\"" isEqual:column.type]) {
@@ -430,7 +459,7 @@ NSString *const SMDatabaseErrorDomain = @"SMDatabaseErrorDomain";
                         if (sqlite3_column_type(statement, column.index) != SQLITE_NULL) {
                             const char *value = (const char *)sqlite3_column_text(statement, column.index);
                             if (value) {
-                                NSString *string = @(value);
+                                NSString *string = [NSString stringWithUTF8String:value];
                                 [result setValue:string forKey:column.name];
                             }
                         }
